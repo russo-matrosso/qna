@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
 
   def edit
@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
       flash[:notice] = 'Your question has been created'
       redirect_to @question
@@ -31,7 +31,7 @@ class QuestionsController < ApplicationController
   def update
     @question.update(question_params)
     if @question.save
-      flash[:notice] = 'Your question has been succsesfully updated'
+      flash[:notice] = 'Your question has been successfully updated'
       redirect_to @question
     else
       render :edit

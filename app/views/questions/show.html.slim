@@ -1,4 +1,6 @@
 h1= @question.title
 p= @question.body
+p= @question.user.email
 
-p= link_to 'Edit question', edit_question_path(@question)
+- if current_user == @question.user
+    p= link_to 'Edit question', edit_question_path(@question)

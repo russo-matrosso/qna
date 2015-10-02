@@ -10,9 +10,6 @@ feature 'Edit question', %q{
   given(:question) {create(:question, user: user)}
 
   scenario 'Authenticated user edit his question' do
-    # question.user == user
-    # expect(question.user).to eq user
-
     sign_in(user)
 
     visit question_path(question)
@@ -21,10 +18,18 @@ feature 'Edit question', %q{
     fill_in 'Body', with: 'New question body'
     click_on 'Edit question'
 
-    expect(page).to have_content 'Your question has been succsesfully updated'
+    expect(page).to have_content 'Your question has been successfully updated'
     expect(current_path).to eq question_path(question)
     expect(page).to have_content 'New question title'
     expect(page).to have_content 'New question body'
   end
 
+  scenario 'Authenticated user tryes to edit not his question' do
+    @question = create(:question, user: create(:user))
+
+    sign_in(user)
+
+    visit question_path(@question)
+    expect(page).not_to have_link 'Edit question'
+  end
 end
