@@ -4,3 +4,9 @@ p= @question.user.email
 
 - if current_user == @question.user
     p= link_to 'Edit question', edit_question_path(@question)
+    p
+      a id='delete_question' href='#' Delete question
+      p id='delete_confirmation'
+        | Are you sure?
+        = link_to 'Yes', question_path(@question), method: :delete
+        a id='hide_confirmation' href='#' No
