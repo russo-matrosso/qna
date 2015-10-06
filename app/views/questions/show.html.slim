@@ -12,13 +12,10 @@ p= @question.user.email
         a id='hide_confirmation' href='#' No
 
 - if user_signed_in?
-  = form_for [@question, @answer] do |f|
+  = form_for [@question, @answer], remote: true do |f|
     = f.label :body, 'Your answer'
     = f.text_area :body
     = f.submit 'Create answer'
 
 .answers
-  - @question.answers.each do |answer|
-    - if answer.persisted?
-      p = answer.body
-      p = answer.user.email
+  = render 'answers'

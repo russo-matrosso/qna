@@ -10,12 +10,13 @@ RSpec.describe AnswersController, type: :controller do
       it 'should save the answer to the database' do
         expect {post :create,
                      answer: attributes_for(:answer),
-                     question_id: question
+                     question_id: question,
+                     format: :js
         }.to change(question.answers, :count).by(1)
       end
-      it 'redirects to question' do
-        post :create, answer: attributes_for(:answer), question_id: question
-        expect(response).to redirect_to question_path(question)
+      it 'renders create template' do
+        post :create, answer: attributes_for(:answer), question_id: question, format: :js
+        expect(response).to render_template :create
       end
     end
 
@@ -23,12 +24,13 @@ RSpec.describe AnswersController, type: :controller do
       it 'should not save the answer in database' do
         expect {post :create,
                      answer: attributes_for(:invalid_answer),
-                     question_id: question
+                     question_id: question,
+                     format: :js
         }.not_to change(Answer, :count)
       end
-      it 'redirects to question' do
-        post :create, answer: attributes_for(:invalid_answer), question_id: question
-        expect(response).to redirect_to question_path(question)
+      it 'renders create template' do
+        post :create, answer: attributes_for(:invalid_answer), question_id: question, format: :js
+        expect(response).to render_template :create
       end
     end
   end

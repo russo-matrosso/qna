@@ -9,7 +9,7 @@ feature 'User answer', %q{
   given(:user) {create(:user)}
   given(:question) {create(:question, user: user)}
 
-  scenario 'Authenticated user creates answer' do
+  scenario 'Authenticated user creates answer' , js: true do
     sign_in(user)
     visit question_path(question)
 
@@ -19,9 +19,7 @@ feature 'User answer', %q{
     expect(current_path).to eq question_path(question)
     within '.answers' do
       expect(page).to have_content 'my answer'
-      save_and_open_page
       expect(page).to have_content user.email
-
     end
   end
 end

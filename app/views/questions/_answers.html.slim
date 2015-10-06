@@ -1,0 +1,4 @@
+- @question.answers.each do |answer|
+  - if answer.persisted?
+    p = answer.body
+    p = answer.user.email
