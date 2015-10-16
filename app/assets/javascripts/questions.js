@@ -7,3 +7,4 @@ $(document).ready(function() {
         $('#delete_confirmation').hide();
     });
 });
+
