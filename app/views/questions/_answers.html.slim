@@ -1,6 +1,9 @@
 - @question.answers.each do |answer|
   - if answer.persisted?
     p = answer.body
+    ul
+      - answer.attachments.each do |a|
+        li = link_to a.file.file.filename, a.file.url
     p = answer.user.email
 
     - if current_user == answer.user
@@ -19,4 +22,4 @@
             = f.text_area :body
             = f.submit 'Save'
             h6
-              a href='#' Hide
+              a href='#' Hides

@@ -28,6 +28,7 @@ gem 'devise'
 
 # Add files
 gem 'carrierwave'
+gem 'remotipart'
 
 # Twitter Bootstrap
 gem "therubyracer"
