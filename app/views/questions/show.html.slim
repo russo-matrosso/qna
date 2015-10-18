@@ -1,5 +1,10 @@
 h1= @question.title
 p= @question.body
+h3 Attachments
+ul
+  - @question.attachments.each do |a|
+    li= a.file.file.filename
+
 p= @question.user.email
 
 - if current_user == @question.user
