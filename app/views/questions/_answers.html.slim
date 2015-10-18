@@ -4,16 +4,19 @@
     p = answer.user.email
 
     - if current_user == answer.user
+      .edit
         p = link_to 'Edit', '', class: 'edit-answer-link', data: {answer_id: answer.id}
+        p = link_to 'Delete', '', class: 'delete-answer-link', data: {answer_id: answer.id}
+
+        div class='confirm-answer-delete' id='delete-answer-#{answer.id}' style='display: none'
+          .confirm
+            h4 Are you sure?
+            p = link_to 'Yes', question_answer_path(@question, answer), method: :delete, remote: true
+            a class='hide-answer-delete' href='#' No
         p
           = form_for [@question, answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
             = f.label :body, 'Answer'
             = f.text_area :body
             = f.submit 'Save'
-
-        p = link_to 'Delete', '', class: 'delete-answer-link', data: {answer_id: answer.id}
-        p class='confirm-answer-delete'
-          .confirm
-            h4 Are you sure?
-            p = link_to 'Yes', question_answer_path(@question, answer), method: :delete, remote: true
-            a class='hide-answer-delete' href='#' No
+            h6
+              a href='#' Hide

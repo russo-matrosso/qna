@@ -7,5 +7,10 @@ $ ->
     e.preventDefault()
     answer_id = $(this).data('answerId')
     $('form#edit-answer-' + answer_id).toggle()
-    $(this).text('Hide') if $('form#edit-answer-' + answer_id).css('display') != 'none'
-    $(this).text('Edit') if $('form#edit-answer-' + answer_id).css('display') == 'none'
+
+
+  $('.delete-answer-link').click (e) ->
+    e.preventDefault()
+    answer_id = $(this).data('answerId')
+    $('#delete-answer-' + answer_id).toggle()
+
