@@ -14,7 +14,20 @@ class AnswersController < ApplicationController
     @answer.update(answer_params)
   end
 
+  def destroy
+    @question = Question.find(params[:question_id])
+    @answer = Answer.find(params[:id])
+    @answer.destroy
+    render :update
+  end
+
   private
+
+  # def check_author
+  #   if current_user != @answer.user
+  #     redirect_to root_path
+  #   end
+  # end
 
   def answer_params
     params.require(:answer).permit(:body)

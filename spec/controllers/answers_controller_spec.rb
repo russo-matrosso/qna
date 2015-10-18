@@ -69,7 +69,7 @@ RSpec.describe AnswersController, type: :controller do
       expect(answer.body).to eq 'new body'
     end
 
-    it 'should rander update template' do
+    it 'should render update template' do
       patch :update,
             answer: attributes_for(:answer),
             question_id: question,
@@ -77,5 +77,26 @@ RSpec.describe AnswersController, type: :controller do
             format: :js
       expect(response).to render_template :update
     end
+  end
+
+  describe 'DELETE #destroy' do
+    let(:answer) {create(:answer, user_id: user, question_id: question)}
+
+    it 'should assign the requested answer to @answer' do
+      delete :destroy,
+            question_id: question,
+            id: answer,
+            format: :js
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'should delete the answer from the database' do
+      answer
+      expect{delete :destroy,
+                    question_id: question,
+                    id: answer,
+                    format: :js}.to change(Answer, :count).by(-1)
+    end
+
   end
 end
