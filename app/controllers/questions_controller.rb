@@ -7,8 +7,13 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answers = @question.answers.all
     @answer = @question.answers.build
     @answer.attachments.build
+    respond_to do |format|
+        format.html
+        format.json {render json: @question.answers.order(created_at: :desc), root: false}
+    end
   end
 
   def new

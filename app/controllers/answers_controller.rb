@@ -3,9 +3,13 @@ class AnswersController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-    @answer.save
+      @answer = @question.answers.build(answer_params)
+      @answer.user = current_user
+    respond_to do |format|
+      if @answer.save
+        format.json {render json: @answer}
+      end
+    end
   end
 
   def update

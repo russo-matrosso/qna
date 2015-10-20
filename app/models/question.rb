@@ -1,4 +1,6 @@
 class Question < ActiveRecord::Base
+  include ActiveModel::Serialization
+
   validates :title, :body, presence: true
 
   belongs_to :user

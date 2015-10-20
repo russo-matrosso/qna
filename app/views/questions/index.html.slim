@@ -1,10 +1,11 @@
-- if user_signed_in?
-  p= link_to 'Log out', destroy_user_session_path, method: :delete
-- else
-  p= link_to 'Sign up', new_user_registration_path
-  p= link_to 'Log in', new_user_session_path
-
-p= link_to 'New question', new_question_path
-
-- @questions.each do |question|
-  h2= link_to question.title, question_path(question)
+.col-md-8
+  h1 Questions
+  - @questions.each do |question|
+    ul.list-unstyled
+      h2= link_to question.title, question_path(question)
+      ul.list-inline
+        li= link_to question.user.email, '#'
+        li= question.updated_at
+.col-md-4
+  h1
+  h1= link_to 'Ask question', new_question_path
