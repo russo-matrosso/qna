@@ -1,12 +1,10 @@
 .col-md-8
   p{} {{body}}
-  p{} {{user.email}} {{user.id}}
+  p{} {{user.email}}
   a data-remote="true" rel="nofollow" data-method="delete" href="/questions/{{question.id}}/answers/{{id}}" Delete
 
-
-
-  form id="edit-answer-{{id}}" class="edit_answer" action="/questions/{{question_id}}/answers" accept-charset="UTF-8" data-remote="true" method="post"
+  form id="edit-answer-{{id}}" class="edit_answer" action="/questions/{{question.id}}/answers/" accept-charset="UTF-8" data-remote="true" method="post"
     input name="utf8" type="hidden" value="✓"
     label for="answer_body" Answer
-    textarea name="answer[body]" id="answer_body"
+    textarea name="answer[body]" id="answer_body" {{body}}
     input type="submit" name="commit" value="Save"
