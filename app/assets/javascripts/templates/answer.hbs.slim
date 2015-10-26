@@ -1,7 +1,9 @@
-.col-md-8
+.col-md-8.answer
   p{} {{body}}
   p{} {{user.email}}
-  a data-remote="true" rel="nofollow" data-method="delete" href="/questions/{{question.id}}/answers/{{id}}" Delete
+  a data-remote="true" class="delete_answer" rel="nofollow" data-method="delete" href="/questions/{{question.id}}/answers/{{id}}" Delete
+
+
 
   form id="edit-answer-{{id}}" class="edit_answer" action="/questions/{{question.id}}/answers/" accept-charset="UTF-8" data-remote="true" method="post"
     input name="utf8" type="hidden" value="✓"

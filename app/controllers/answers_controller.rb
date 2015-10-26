@@ -7,7 +7,7 @@ class AnswersController < ApplicationController
       @answer.user = current_user
     respond_to do |format|
       if @answer.save
-        format.json {render json: @answer}
+        format.json {render json: @answer, root: false}
       end
     end
   end
@@ -22,16 +22,10 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = Answer.find(params[:id])
     @answer.destroy
-    render :update
+    render json: @question.answers.order(created_at: :desc), root: false
   end
 
   private
-
-  # def check_author
-  #   if current_user != @answer.user
-  #     redirect_to root_path
-  #   end
-  # end
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file])
