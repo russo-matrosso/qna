@@ -5,8 +5,9 @@
 
 
 
-  form id="edit-answer-{{id}}" class="edit_answer" action="/questions/{{question.id}}/answers/" accept-charset="UTF-8" data-remote="true" method="post"
+  form id="edit_answer_{{id}}" class="edit_answer" action="/questions/{{question.id}}/answers/{{id}}" accept-charset="UTF-8" data-remote="true" method="post"
     input name="utf8" type="hidden" value="✓"
+    input type="hidden" name="_method" value="patch"
     label for="answer_body" Answer
     textarea name="answer[body]" id="answer_body" {{body}}
     input type="submit" name="commit" value="Save"
