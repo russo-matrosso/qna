@@ -15,13 +15,12 @@ feature 'Author can delete his answer', %q{
     expect(page).not_to have_link 'Delete'
   end
 
-  scenario 'Author of the answer tryes to delete it', js: true do
+  scenario 'Authenticated user of the answer tryes to delete it', js: true do
     sign_in user
     visit question_path(question)
 
     within '.answers' do
       click_on 'Delete'
-      click_on 'Yes'
     end
 
     expect(page).not_to have_content answer.body

@@ -8,27 +8,33 @@ feature 'User answer', %q{
 
   given(:user) {create(:user)}
   given(:question) {create(:question, user: user)}
+  given(:answer) {build(:answer, question: question, user: user)}
 
   scenario 'Authenticated user creates answer' , js: true do
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Your answer', with: 'my answer'
+    fill_in 'Your answer', with: answer.body
     click_on 'Create answer'
 
     expect(current_path).to eq question_path(question)
+
     within '.answers' do
-      expect(page).to have_content 'my answer'
+      expect(page).to have_content answer.body
       expect(page).to have_content user.email
     end
   end
 
-  scenario 'Authenticated user creates bad answer', js: true do
+  scenario 'Authenticated user creates bad answer' , js: true do
     sign_in(user)
     visit question_path(question)
 
     click_on 'Create answer'
 
-    expect(page).to have_content "Body can't be blank"
+    expect(page).to have_content "can't be blank"
+
+
   end
+
+
 end

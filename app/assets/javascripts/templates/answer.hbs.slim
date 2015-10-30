@@ -1,7 +1,10 @@
 .col-md-8.answer
   p{} {{body}}
   p{} {{user.email}}
-  a data-remote="true" class="delete_answer" rel="nofollow" data-method="delete" href="/questions/{{question.id}}/answers/{{id}}" Delete
+  .edit
+	  a class="show_edit_answer" href="#" Edit
+	  a class="hide_edit_answer" href="#" Hide
+	  a data-remote="true" class="delete_answer" rel="nofollow" data-method="delete" href="/questions/{{question.id}}/answers/{{id}}" Delete
 
 
 

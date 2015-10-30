@@ -8,6 +8,9 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if @answer.save
         format.json {render json: @answer, root: false}
+      else
+        flash = "Answer body can't be blank"
+        format.json {render json: flash, status: 406}
       end
     end
   end
