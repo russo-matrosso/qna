@@ -3,10 +3,22 @@ this.Qna = {}
 class @Question
   constructor: () ->
     this.$el = $('.question')
-    # this.$answers = $('.answers')
+    this.$form = this.$el.find('#new_answer')
     this.answers = []
 
-$ ->
+    this.ajax()
+
+  ajax: () ->
+    that = this
+
+    this.$form.bind 'ajax:success', (e, data, status, xhr) ->
+      response = $.parseJSON(xhr.responseText);
+      $('.answers').append(HandlebarsTemplates['answer'](response))
+      answer = new Answer('answer_' + response.id)
+      Qna.question.answers.push(answer)
+      that.$form.find('#answer_body').val('')
+
+$(document).on 'ready page:load', ->
   Qna.question = new Question
 
   $(".answers .answer").each((i, e) ->
