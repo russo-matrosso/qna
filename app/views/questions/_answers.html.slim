@@ -1,9 +1,10 @@
 .answers
-  .col-md-8.answer
-    - @question.answers.each do |answer|
-      - if answer.persisted?
-        p = answer.body
-        p = answer.user.id
+  
+  - @question.answers.each do |answer|
+    - if answer.persisted?
+      .answer.col-md-8 id="answer_#{answer.id}"
+        p.answer-body = answer.body
+        p = answer.user.email
         .edit
           p = link_to 'Edit', '', class: 'show_edit_answer'
           p = link_to 'Hide', '', class: 'hide_edit_answer'

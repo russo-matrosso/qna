@@ -1,34 +1,35 @@
-h1= @question.title
-p= @question.body
-h3 Attachments
-ul
-  - @question.attachments.each do |a|
-    li = link_to a.file.file.filename, a.file.url
+.question
+  h1= @question.title
+  p= @question.body
+  h3 Attachments
+  ul
+    - @question.attachments.each do |a|
+      li = link_to a.file.file.filename, a.file.url
 
-p= @question.user.email
+  p= @question.user.email
 
-- if current_user == @question.user
-  .edit
-    p= link_to 'Edit question', edit_question_path(@question)
-    p
-      a id='delete_question' href='#' Delete question
-      div id='delete_confirmation'
-        .confirm
-          h4 Are you sure?
-          = link_to 'Yes', question_path(@question), method: :delete
-          a id='hide_confirmation' href='#' No
+  - if current_user == @question.user
+    .edit
+      p= link_to 'Edit question', edit_question_path(@question)
+      p
+        a id='delete_question' href='#' Delete question
+        div id='delete_confirmation'
+          .confirm
+            h4 Are you sure?
+            = link_to 'Yes', question_path(@question), method: :delete
+            a id='hide_confirmation' href='#' No
 
-- if user_signed_in?
-  = form_for [@question, @answer], remote: true do |f|
-    p
-      = f.label :body, 'Your answer'
-      .answer-errors
-      = f.text_area :body
-    p
-      = f.fields_for :attachments do |a|
-        = a.label :file
-        = a.file_field :file
-    = f.submit 'Create answer'
+  - if user_signed_in?
+    = form_for [@question, @answer], remote: true do |f|
+      p
+        = f.label :body, 'Your answer'
+        .answer-errors
+        = f.text_area :body
+      p
+        = f.fields_for :attachments do |a|
+          = a.label :file
+          = a.file_field :file
+      = f.submit 'Create answer'
 
 h2 Answers
 
