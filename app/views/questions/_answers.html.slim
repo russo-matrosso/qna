@@ -6,9 +6,9 @@
         p.answer-body = answer.body
         p = answer.user.email
         .edit
-          p = link_to 'Edit', '', class: 'show_edit_answer'
-          p = link_to 'Hide', '', class: 'hide_edit_answer'
-          p = link_to 'Delete', question_answer_path(@question, answer), method: :delete, class: 'delete_answer', remote: true
+          = link_to 'Edit', '', class: 'show_edit_answer'
+          = link_to 'Hide', '', class: 'hide_edit_answer'
+          = link_to 'Delete', question_answer_path(@question, answer), method: :delete, class: 'delete_answer', remote: true
 
 
         = form_for [@question, answer], remote: true, class: 'edit_answer' do |f|
