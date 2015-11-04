@@ -18,6 +18,10 @@ class @Question
       Qna.question.answers.push(answer)
       that.$form.find('#answer_body').val('')
 
+    this.$form.bind 'ajax:error', (event, jqxhr, settings, thrownError) ->
+      console.log ('error')
+      $('form#new_answer').after(jqxhr.responseText)
+
 $(document).on 'ready page:load', ->
   Qna.question = new Question
 

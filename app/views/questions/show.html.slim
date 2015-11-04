@@ -20,15 +20,15 @@
             a id='hide_confirmation' href='#' No
 
   - if user_signed_in?
-    = form_for [@question, @answer], remote: true do |f|
+    = form_for [@question, @answer], remote: true, data: {type: :json} do |f|
       p
         = f.label :body, 'Your answer'
         .answer-errors
         = f.text_area :body
-      p
-        = f.fields_for :attachments do |a|
-          = a.label :file
-          = a.file_field :file
+      / p
+      /   = f.fields_for :attachments do |a|
+      /     = a.label :file
+      /     = a.file_field :file
       = f.submit 'Create answer'
 
 h2 Answers

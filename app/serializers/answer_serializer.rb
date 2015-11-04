@@ -4,6 +4,7 @@ class AnswerSerializer < ActiveModel::Serializer
 
   has_one :user
   has_one :question
+  # has_one :attachments
 
   # def attributes
   #   hash = super

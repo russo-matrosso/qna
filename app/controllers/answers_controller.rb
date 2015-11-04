@@ -7,7 +7,7 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     respond_to do |format|
       if @answer.save
-        format.json {render json: @answer, root: false}
+        format.json {render_without_remotipart json: @answer, root: false}
       else
         flash = "Answer body can't be blank"
         format.json {render json: flash, status: 406}
@@ -34,6 +34,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
+
     params.require(:answer).permit(:body, attachments_attributes: [:file])
   end
 end

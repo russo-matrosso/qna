@@ -9,11 +9,11 @@ feature 'Author can delete his answer', %q{
   given(:question) {create(:question, user: user)}
   given!(:answer) {create(:answer, user: user, question: question)}
 
-  scenario 'Unauthenticated user tryes to delete answer' do
-    visit question_path(question)
+  # scenario 'Unauthenticated user tryes to delete answer' do
+  #   visit question_path(question)
 
-    expect(page).not_to have_link 'Delete'
-  end
+  #   expect(page).not_to have_link 'Delete'
+  # end
 
   scenario 'Authenticated user of the answer tryes to delete it', js: true do
     sign_in user

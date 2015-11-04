@@ -12,13 +12,8 @@ RSpec.describe AnswersController, type: :controller do
         expect {post :create,
                      answer: attributes_for(:answer),
                      question_id: question,
-                     format: :js
+                     format: :json
         }.to change(question.answers, :count).by(1)
-      end
-
-      it 'renders create template' do
-        post :create, answer: attributes_for(:answer), question_id: question, format: :js
-        expect(response).to render_template :create
       end
     end
 
@@ -27,13 +22,8 @@ RSpec.describe AnswersController, type: :controller do
         expect {post :create,
                      answer: attributes_for(:invalid_answer),
                      question_id: question,
-                     format: :js
+                     format: :json
         }.not_to change(Answer, :count)
-      end
-
-      it 'renders create template' do
-        post :create, answer: attributes_for(:invalid_answer), question_id: question, format: :js
-        expect(response).to render_template :create
       end
     end
   end
@@ -46,7 +36,7 @@ RSpec.describe AnswersController, type: :controller do
             answer: attributes_for(:answer),
             question_id: question,
             id: answer,
-            format: :js
+            format: :json
       expect(assigns(:answer)).to eq answer
     end
 
@@ -55,7 +45,7 @@ RSpec.describe AnswersController, type: :controller do
             answer: attributes_for(:answer),
             question_id: question,
             id: answer,
-            format: :js
+            format: :json
       expect(assigns(:question)).to eq question
     end
 
@@ -64,18 +54,9 @@ RSpec.describe AnswersController, type: :controller do
              answer: {body: 'new body'},
              question_id: question,
              id: answer,
-             format: :js
+             format: :json
       answer.reload
       expect(answer.body).to eq 'new body'
-    end
-
-    it 'should render update template' do
-      patch :update,
-            answer: attributes_for(:answer),
-            question_id: question,
-            id: answer,
-            format: :js
-      expect(response).to render_template :update
     end
   end
 
@@ -86,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
       delete :destroy,
             question_id: question,
             id: answer,
-            format: :js
+            format: :json
       expect(assigns(:answer)).to eq answer
     end
 
@@ -95,7 +76,7 @@ RSpec.describe AnswersController, type: :controller do
       expect{delete :destroy,
                     question_id: question,
                     id: answer,
-                    format: :js}.to change(Answer, :count).by(-1)
+                    format: :json}.to change(Answer, :count).by(-1)
     end
 
   end
