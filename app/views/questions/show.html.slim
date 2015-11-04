@@ -6,7 +6,7 @@
     - @question.attachments.each do |a|
       li = link_to a.file.file.filename, a.file.url
 
-  p= @question.user.email
+  = link_to @question.user.email, user_path(@question.user)
 
   - if current_user == @question.user
     .edit

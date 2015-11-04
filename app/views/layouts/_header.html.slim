@@ -5,7 +5,7 @@ nav.navbar.navbar-default
       ul.nav.navbar-nav.navbar-right
         -if user_signed_in?
           li= link_to 'Log out', destroy_user_session_path, method: :delete
-          .navbar-text= link_to current_user.email, '#'
+          .navbar-text= link_to current_user.email, user_path(current_user)
         -else
           li= link_to 'Sign in', new_user_session_path
           li= link_to 'Register', new_user_registration_path
