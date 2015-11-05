@@ -54,10 +54,10 @@ class QuestionsController < ApplicationController
 
   def favourite
     type = params[:type]
-    if type == 'favourite' 
+    if type == 'favourite' && current_user.favourites.exclude?(@question)
       current_user.favourites << @question
       redirect_to :back, notice: "You favorited #{@question.title}"
-    elsif type == 'unfavourite'
+    elsif type == 'unfavourite' && current_user.favourites.include?(@question)
       current_user.favourites.delete(@question)
       redirect_to :back, notice: "You unfavourited #{@question.title}"
     else

@@ -35,7 +35,11 @@
         = f.submit 'Create answer'
 
   .col-md-4
-    =link_to 'Favourite question', favourite_question_path(@question, type: 'favourite'), method: :post
+    - if user_signed_in?
+      - if current_user.favourites.exclude?(@question)
+        =link_to 'Favourite question', favourite_question_path(@question, type: 'favourite'), method: :post
+      - else
+        =link_to 'Remove from favourites', favourite_question_path(@question, type: 'unfavourite'), method: :post
 
 .row
   h2 Answers

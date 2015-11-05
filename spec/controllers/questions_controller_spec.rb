@@ -148,7 +148,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #save_question' do
+  describe 'POST #favourite' do
     before(:each) do
       request.env["HTTP_REFERER"] = question_path(question)
       sign_in user
@@ -156,6 +156,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     let(:user) {create(:user)}
+    let(:another_question) {create(:question)}
 
     it 'should assign favourite question to @question' do
       expect(assigns(:question)).to eq question
@@ -163,7 +164,11 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with type: favourite' do
       it 'should add question to user favourite' do
-        expect{post :favourite, id: question, type: 'favourite'}.to change(user.favourites, :count).by(1)
+        expect{post :favourite, id: another_question, type: 'favourite'}.to change(user.favourites, :count).by(1)
+      end
+
+      it 'should not add to favourites if question is already there' do
+        expect{post :favourite, id: question, type: 'favourite'}.not_to change(user.favourites, :count)
       end
     end
 
@@ -171,6 +176,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 'should remove question from user favourites' do
         expect{post :favourite, id: question, type: 'unfavourite'}.to change(user.favourites, :count).by(-1)
       end
+    end
+
+    it 'should not work with non-authenticated user' do
+      sign_out user
+      expect{post :favourite, id: question, type: 'favourite'}.not_to change(user.favourites, :count)
     end
   end
 end
