@@ -7,6 +7,7 @@ class @Question
     this.answers = []
 
     this.ajax()
+    this.bind()
 
   ajax: () ->
     that = this
@@ -22,11 +23,23 @@ class @Question
       console.log ('error')
       $('form#new_answer').after(jqxhr.responseText)
 
+  bind: () ->
+    that = this
+
+
+  toggle_elements: (one, two) ->
+    one.toggle()
+    two.toggle()
+    
+
+
+
+
+
 $(document).on 'ready page:load', ->
   Qna.question = new Question
 
   $(".answers .answer").each((i, e) ->
-    console.log(e.id)
     answer = new Answer(e.id)
 
     Qna.question.answers.push(answer)
