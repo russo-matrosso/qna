@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :favourite]
   before_action :authenticate_user!, except: [:index, :show]
   serialization_scope :view_context
 
@@ -52,6 +52,19 @@ class QuestionsController < ApplicationController
     redirect_to questions_path
   end
 
+  def favourite
+    type = params[:type]
+    if type == 'favourite' 
+      current_user.favourites << @question
+      redirect_to :back, notice: "You favorited #{@question.title}"
+    elsif type == 'unfavourite'
+      current_user.favourites.delete(@question)
+      redirect_to :back, notice: "You unfavourited #{@question.title}"
+    else
+      redirect_to :back, notice: 'Nothing happened.'
+    end
+  end
+
   private
 
   def load_question
@@ -59,6 +72,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:file])
+    params.require(:question).permit(:title, :body, :type, attachments_attributes: [:file])
   end
 end

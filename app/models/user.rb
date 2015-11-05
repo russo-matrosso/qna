@@ -6,4 +6,6 @@ class User < ActiveRecord::Base
 
   has_many :questions
   has_many :answers
+  has_many :favourite_questions
+  has_many :favourites, through: :favourite_questions, source: :question
 end

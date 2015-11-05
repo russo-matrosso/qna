@@ -7,6 +7,8 @@ RSpec.describe Question, type: :model do
   it {should belong_to :user}
   it {should have_many :answers}
   it {should have_many :attachments}
+  it {should have_many :favourite_questions}
+  it {should have_many :favourited_by}
 
   it {should accept_nested_attributes_for :attachments}
 end

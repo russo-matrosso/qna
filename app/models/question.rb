@@ -6,6 +6,8 @@ class Question < ActiveRecord::Base
   belongs_to :user
   has_many :answers
   has_many :attachments, as: :attachmentable
+  has_many :favourite_questions
+  has_many :favourited_by, through: :favourite_questions, source: :user
 
   accepts_nested_attributes_for :attachments
 end

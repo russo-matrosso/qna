@@ -2,10 +2,14 @@ Rails.application.routes.draw do
   get 'users/show'
 
   devise_for :users
+
   resources :questions do
     resources :answers
+    post :favourite, on: :member
   end
+
   resources :users
+
   root 'questions#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

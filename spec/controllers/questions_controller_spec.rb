@@ -147,4 +147,30 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to redirect_to questions_path
     end
   end
+
+  describe 'POST #save_question' do
+    before(:each) do
+      request.env["HTTP_REFERER"] = question_path(question)
+      sign_in user
+      post :favourite, id: question, type: 'favourite'
+    end
+
+    let(:user) {create(:user)}
+
+    it 'should assign favourite question to @question' do
+      expect(assigns(:question)).to eq question
+    end
+
+    context 'with type: favourite' do
+      it 'should add question to user favourite' do
+        expect{post :favourite, id: question, type: 'favourite'}.to change(user.favourites, :count).by(1)
+      end
+    end
+
+    context 'with type: unfavourite' do
+      it 'should remove question from user favourites' do
+        expect{post :favourite, id: question, type: 'unfavourite'}.to change(user.favourites, :count).by(-1)
+      end
+    end
+  end
 end
