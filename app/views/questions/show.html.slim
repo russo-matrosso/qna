@@ -37,9 +37,9 @@
   .col-md-4
     - if user_signed_in?
       - if current_user.favourites.exclude?(@question)
-        =link_to 'Favourite question', favourite_question_path(@question, type: 'favourite'), method: :post
+        = link_to 'Favourite question', favourite_question_path(@question, type: 'favourite'), method: :post
       - else
-        =link_to 'Remove from favourites', favourite_question_path(@question, type: 'unfavourite'), method: :post
+        = link_to 'Remove from favourites', favourite_question_path(@question, type: 'unfavourite'), method: :post
 
 .row
   h2 Answers
