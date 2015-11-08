@@ -12,6 +12,6 @@ h1= @user.email
       - @user.favourites.each do |favourite|
         li
           = link_to favourite.title, question_path(favourite)
-          = link_to favourite_question_path(favourite, type: 'unfavourite'), method: :post do
-            span.glyphicon.glyphicon-remove 
-        
+        /   = link_to favourite_question_path(favourite, type: 'unfavourite'), method: :post do
+        /     span.glyphicon.glyphicon-remove 
+        / 

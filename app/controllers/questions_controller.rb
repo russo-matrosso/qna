@@ -1,10 +1,11 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :favourite]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_favourite]
   before_action :authenticate_user!, except: [:index, :show]
-  serialization_scope :view_context
+
+  respond_to :html, :json
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
@@ -52,17 +53,22 @@ class QuestionsController < ApplicationController
     redirect_to questions_path
   end
 
-  def favourite
-    type = params[:type]
-    if type == 'favourite' && current_user.favourites.exclude?(@question)
-      current_user.favourites << @question
-      redirect_to :back, notice: "You favorited #{@question.title}"
-    elsif type == 'unfavourite' && current_user.favourites.include?(@question)
-      current_user.favourites.delete(@question)
-      redirect_to :back, notice: "You unfavourited #{@question.title}"
-    else
-      redirect_to :back, notice: 'Nothing happened.'
-    end
+  # def favourite
+  #   type = params[:type]
+  #   if type == 'favourite' && current_user.favourites.exclude?(@question)
+  #     current_user.favourites << @question
+  #     redirect_to :back, notice: ""
+  #   elsif type == 'unfavourite' && current_user.favourites.include?(@question)
+  #     current_user.favourites.delete(@question)
+  #     redirect_to :back, notice: "You unfavourited #{@question.title}"
+  #   else
+  #     redirect_to :back, notice: 'Nothing happened.'
+  #   end
+  # end
+
+  def add_favourite
+    current_user.add_favourite(@question)
+    redirect_to :back, notice: "You favorited #{@question.title}"
   end
 
   private

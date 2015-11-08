@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers
-    post :favourite, on: :member
+    post :add_favourite, on: :member
   end
 
   resources :users
