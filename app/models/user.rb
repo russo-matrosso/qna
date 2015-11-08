@@ -8,4 +8,12 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :favourite_questions
   has_many :favourites, through: :favourite_questions, source: :question
+
+  def add_favourite(question)
+    self.favourites << question unless self.favourited?(question)
+  end
+
+  def favourited?(question)
+    self.favourites.include?(question)
+  end
 end
