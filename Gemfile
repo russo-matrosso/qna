@@ -39,6 +39,8 @@ gem 'less-rails'
 gem 'pg'
 # Rails, nuff said
 gem 'rails', '4.2.4'
+# Useful rake tasks
+gem 'rateaux'
 # Asynchron file upload
 gem 'remotipart'
 # Docs

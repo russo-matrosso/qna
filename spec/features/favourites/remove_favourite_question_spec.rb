@@ -28,7 +28,7 @@ feature 'Remove question from favourites', %q{
 
   scenario 'User remove question from profile page' do
     visit user_path(user)
-    click_link('', href: "/questions/#{question.id}/favourite?type=unfavourite")
+    click_link('', href: "/questions/#{question.id}/remove_favourite")
 
     within '.favourites' do
       expect(page).not_to have_content question.title
@@ -37,4 +37,5 @@ feature 'Remove question from favourites', %q{
     visit question_path(question)
     expect(page).to have_content 'Favourite question'
   end
+
 end

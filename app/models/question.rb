@@ -1,3 +1,16 @@
+# +------------+----------+
+# |       Questions       |
+# +------------+----------+
+# | Name       | Type     |
+# +------------+----------+
+# | id         | integer  |
+# | title      | string   |
+# | body       | text     |
+# | created_at | datetime |
+# | updated_at | datetime |
+# | user_id    | integer  |
+# +------------+----------+
+
 class Question < ActiveRecord::Base
   include ActiveModel::Serialization
 

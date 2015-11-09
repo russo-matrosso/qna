@@ -23,6 +23,17 @@ RSpec.describe User do
     end
   end
 
+  describe '#remove_favourite' do
+    let(:user) {create(:user)}
+    let(:question) {create(:question)}
+
+    before {user.favourites << question}
+
+    it 'removes question from favourites' do
+      expect{user.remove_favourite(question)}.to change(user.favourites, :count).by(-1)
+    end
+  end
+
   describe '#favourited?' do
     let(:user) {create(:user)}
     let(:question) {create(:question)}

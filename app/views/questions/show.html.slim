@@ -39,7 +39,7 @@
       - unless current_user.favourited?(@question)
         = link_to 'Favourite question', add_favourite_question_path(@question), method: :post
       - else
-        / = link_to 'Remove from favourites', remove_favourite_question_path(@question), method: :post
+        = link_to 'Remove from favourites', remove_favourite_question_path(@question), method: :post
 
 .row
   h2 Answers

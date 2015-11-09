@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_favourite]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_favourite, :remove_favourite]
   before_action :authenticate_user!, except: [:index, :show]
 
   respond_to :html, :json
@@ -53,22 +53,14 @@ class QuestionsController < ApplicationController
     redirect_to questions_path
   end
 
-  # def favourite
-  #   type = params[:type]
-  #   if type == 'favourite' && current_user.favourites.exclude?(@question)
-  #     current_user.favourites << @question
-  #     redirect_to :back, notice: ""
-  #   elsif type == 'unfavourite' && current_user.favourites.include?(@question)
-  #     current_user.favourites.delete(@question)
-  #     redirect_to :back, notice: "You unfavourited #{@question.title}"
-  #   else
-  #     redirect_to :back, notice: 'Nothing happened.'
-  #   end
-  # end
-
   def add_favourite
     current_user.add_favourite(@question)
     redirect_to :back, notice: "You favorited #{@question.title}"
+  end
+
+  def remove_favourite
+    current_user.remove_favourite(@question)
+    redirect_to :back, notice: "#{@question.title} has been removed from favourites"
   end
 
   private
