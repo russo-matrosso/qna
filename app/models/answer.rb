@@ -1,15 +1,14 @@
-# +-------------+----------+
-# |        Answers         |
-# +-------------+----------+
-# | Name        | Type     |
-# +-------------+----------+
-# | id          | integer  |
-# | body        | text     |
-# | question_id | integer  |
-# | created_at  | datetime |
-# | updated_at  | datetime |
-# | user_id     | integer  |
-# +-------------+----------+
+# == Schema Information
+#
+# Table name: answers
+#
+#  id          :integer          not null, primary key
+#  body        :text
+#  question_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :integer
+#
 
 class Answer < ActiveRecord::Base
   include ActiveModel::Serialization

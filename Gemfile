@@ -21,6 +21,8 @@ end
 
 # Create custom JSON objects
 gem 'active_model_serializers'
+# Annotations for models, routes, etc
+gem 'annotate'
 # File upload
 gem 'carrierwave'
 # Coffee scrupt support
