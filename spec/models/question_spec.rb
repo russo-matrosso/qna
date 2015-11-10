@@ -7,6 +7,7 @@ RSpec.describe Question, type: :model do
   it {should belong_to :user}
   it {should have_many :answers}
   it {should have_many :attachments}
+  it {should have_many :votes}
   it {should have_many :favourite_questions}
   it {should have_many :favourited_by}
 

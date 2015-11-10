@@ -16,6 +16,11 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #
+# Indexes
+#
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#
 
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
@@ -25,6 +30,7 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :favourite_questions
   has_many :favourites, through: :favourite_questions, source: :question
+  has_many :votes
 
   def add_favourite(question)
     self.favourites << question unless self.favourited?(question)

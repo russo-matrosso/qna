@@ -9,6 +9,10 @@
 #  updated_at :datetime         not null
 #  user_id    :integer
 #
+# Indexes
+#
+#  index_questions_on_user_id  (user_id)
+#
 
 class Question < ActiveRecord::Base
   include ActiveModel::Serialization
@@ -18,6 +22,7 @@ class Question < ActiveRecord::Base
   belongs_to :user
   has_many :answers
   has_many :attachments, as: :attachmentable
+  has_many :votes, as: :votable
   has_many :favourite_questions
   has_many :favourited_by, through: :favourite_questions, source: :user
 

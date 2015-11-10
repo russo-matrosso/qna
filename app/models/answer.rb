@@ -9,6 +9,11 @@
 #  updated_at  :datetime         not null
 #  user_id     :integer
 #
+# Indexes
+#
+#  index_answers_on_question_id  (question_id)
+#  index_answers_on_user_id      (user_id)
+#
 
 class Answer < ActiveRecord::Base
   include ActiveModel::Serialization
@@ -16,6 +21,7 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   belongs_to :user
   has_many :attachments, as: :attachmentable
+  has_many :votes, as: :votable
 
   accepts_nested_attributes_for :attachments
 

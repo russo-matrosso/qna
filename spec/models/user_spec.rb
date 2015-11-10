@@ -8,7 +8,8 @@ RSpec.describe User do
   it {should have_many :answers}
   it {should have_many :favourite_questions}
   it {should have_many :favourites}
-
+  it {should have_many :votes}
+  
   describe '#add_favourite' do
     let(:user) {create(:user)}
     let(:question) {create(:question)}

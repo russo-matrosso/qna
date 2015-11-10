@@ -9,6 +9,11 @@
 #  attachmentable_id   :integer
 #  attachmentable_type :string
 #
+# Indexes
+#
+#  index_attachments_on_attachmentable_id    (attachmentable_id)
+#  index_attachments_on_attachmentable_type  (attachmentable_type)
+#
 
 class Attachment < ActiveRecord::Base
   mount_uploader :file, FileUploader
