@@ -2,13 +2,17 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) {create(:question)}
+  let(:user) {create(:user)}
+
+  before(:each) do |example|
+    sign_in user if example.metadata[:sign_in]
+    request.env["HTTP_REFERER"] = question_path(question) if example.metadata[:redirect_back]
+  end
 
   describe "GET #index" do
     let(:questions) {create_list(:question, 2)}
 
-    before do
-      get :index
-    end
+    before {get :index}
 
     it "should populate the array of questions" do
       expect(assigns(:questions)).to match_array(questions)
@@ -20,9 +24,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "GET #show" do
-    before do
-      get :show, id: question
-    end
+    before {get :show, id: question}
 
     it "should assign the requested question to @question" do
       expect(assigns(:question)).to eq question
@@ -37,12 +39,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    sign_in_user
-
-    before do
-      get :new
-    end
+  describe "GET #new", sign_in: true do
+    before {get :new}
 
     it "should assigns a new question to @question" do
       expect(assigns(:question)).to be_a_new(Question)
@@ -57,12 +55,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "GET #edit" do
-    sign_in_user
-
-    before do
-      get :edit, id: question
-    end
+  describe "GET #edit", sign_in: true do
+    before {get :edit, id: question}
 
     it "should assign the requested question to @question" do
       expect(assigns(:question)).to eq question
@@ -73,9 +67,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "POST #create" do
-    sign_in_user
-
+  describe "POST #create", sign_in: true do
     context "with valid attributes" do
       it "should save the new question in database" do
         expect {post :create, question: attributes_for(:question)}.to change(Question, :count)
@@ -98,9 +90,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "PATCH #update" do
-    sign_in_user
-
+  describe "PATCH #update", sign_in: true do
     context "with valid attributes" do
       it "should assign the requested question to question" do
         patch :update, id: question, question: attributes_for(:question)
@@ -135,9 +125,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
-    sign_in_user
-
+  describe "DELETE #destroy", sign_in: true do
     it "should destroy question" do
       question
       expect{delete :destroy, id: question}.to change(Question, :count).by(-1)
@@ -148,15 +136,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #add_favourite' do
-    let(:user) {create(:user)}
-    let(:question) {create(:question)}
-
-    before {request.env["HTTP_REFERER"] = question_path(question)}
-
-    context 'authorisated user' do
-      before {sign_in user}
-
+  describe 'POST #add_favourite', redirect_back: true  do
+    context 'authorisated user', sign_in: true do
       it 'should assign favourite question to @question' do
         post :add_favourite, id: question
         expect(assigns(:question)).to eq question
@@ -174,18 +155,10 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #remove_favourite' do
-    let(:user) {create(:user)}
-    let(:question) {create(:question)}
+  describe 'POST #remove_favourite', redirect_back: true do
+    before {user.favourites << question}
 
-    before do
-      user.favourites << question
-      request.env["HTTP_REFERER"] = question_path(question)
-    end
-
-    context 'authorisated user' do
-      before {sign_in user}
-
+    context 'authorisated user', sign_in: true do
       it 'should assign favourite question to question' do
         post :remove_favourite, id: question
         expect(assigns(:question)).to eq question
@@ -203,27 +176,14 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #vote_up' do
-    let(:user) {create(:user)}
-    let(:question) {create(:question)}
-
-    before {request.env["HTTP_REFERER"] = question_path(question)}
-
+  describe 'POST #vote_up', sign_in: true, redirect_back: true  do
     it 'should vote up question' do
-      sign_in user
       expect{post :vote_up, id: question}.to change(question.votes, :count).by(1)
     end
   end
 
-  describe 'POST #vote_down' do
-    let(:user) {create(:user)}
-    let(:question) {create(:question)}
-
-    before do
-      request.env["HTTP_REFERER"] = question_path(question)
-      sign_in user
-      user.vote_for(question)
-    end
+  describe 'POST #vote_down', sign_in: true, redirect_back: true  do
+    before {user.vote_for(question)}
 
     it 'should vote down' do
       expect{post :vote_down, id: question}.to change(question.votes, :count).by(-1)
