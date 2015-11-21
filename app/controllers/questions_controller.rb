@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_favourite, :remove_favourite]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_favourite, :remove_favourite, :vote_up, :vote_down]
   before_action :authenticate_user!, except: [:index, :show]
 
   respond_to :html, :json
@@ -61,6 +61,16 @@ class QuestionsController < ApplicationController
   def remove_favourite
     current_user.remove_favourite(@question)
     redirect_to :back, notice: "#{@question.title} has been removed from favourites"
+  end
+
+  def vote_up
+    current_user.vote_for(@question)
+    redirect_to :back, notice: "Voted up #{@question.title}"
+  end
+
+  def vote_down
+    current_user.vote_down_for(@question)
+    redirect_to :back, notice: "Unvoted #{@question.title}"
   end
 
   private

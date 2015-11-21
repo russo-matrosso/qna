@@ -32,6 +32,9 @@ class User < ActiveRecord::Base
   has_many :favourites, through: :favourite_questions, source: :question
   has_many :votes
 
+
+  # Favourites
+
   def add_favourite(question)
     self.favourites << question unless self.favourited?(question)
   end
@@ -43,4 +46,22 @@ class User < ActiveRecord::Base
   def favourited?(question)
     self.favourites.include?(question)
   end
+
+  # Votes
+
+  def vote_for(entry)
+    entry.votes.create(user: self)
+  end
+
+  def vote_down_for(entry)
+    entry.votes.find_by(user: self).destroy
+  end
+
+  def voted_for?(entry)
+    !self.votes.where(votable_id: entry.id).where( votable_type: entry.class.to_s).empty?
+  end
+
+  # def find_vote(entry)
+  #   self.votes.where(votable_id: entry.id).where(votable_type: entry.class.to_s)
+  # end
 end

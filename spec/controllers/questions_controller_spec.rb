@@ -202,4 +202,31 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #vote_up' do
+    let(:user) {create(:user)}
+    let(:question) {create(:question)}
+
+    before {request.env["HTTP_REFERER"] = question_path(question)}
+
+    it 'should vote up question' do
+      sign_in user
+      expect{post :vote_up, id: question}.to change(question.votes, :count).by(1)
+    end
+  end
+
+  describe 'POST #vote_down' do
+    let(:user) {create(:user)}
+    let(:question) {create(:question)}
+
+    before do
+      request.env["HTTP_REFERER"] = question_path(question)
+      sign_in user
+      user.vote_for(question)
+    end
+
+    it 'should vote down' do
+      expect{post :vote_down, id: question}.to change(question.votes, :count).by(-1)
+    end
+  end
 end

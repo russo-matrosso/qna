@@ -48,4 +48,39 @@ RSpec.describe User do
       expect(user.favourited?(question)).to be false
     end
   end
+
+  describe '#vote_for' do
+    let (:user) {create(:user)}
+    let (:question) {create(:question)}
+
+    it 'make new vote for question' do
+      expect{user.vote_for(question)}.to change(Vote, :count).by(1)
+    end
+
+    it 'assign user to the vote' do
+      user.vote_for(question)
+      expect(question.votes.last.user).to eq user
+    end
+  end
+
+  describe '#vote_down_for' do
+    let (:user) {create(:user)}
+    let (:question) {create(:question)}
+
+    before {user.vote_for(question)}
+
+    it 'deletes vote for question' do
+      expect{user.vote_down_for(question)}.to change(question.votes, :count).by(-1)
+    end
+  end
+
+  describe '#voted_for?' do
+    let (:user) {create(:user)}
+    let (:question) {create(:question)}
+
+    it 'should return true if user has voted for question' do
+      user.vote_for(question)
+      expect(user.voted_for?(question)).to be true
+    end
+  end
 end

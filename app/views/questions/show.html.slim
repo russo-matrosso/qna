@@ -36,11 +36,17 @@
 
   .col-md-4
     - if user_signed_in?
-      - unless current_user.favourited?(@question)
-        = link_to 'Favourite question', add_favourite_question_path(@question), method: :post
-      - else
-        = link_to 'Remove from favourites', remove_favourite_question_path(@question), method: :post
-
+      .favourites
+        - unless current_user.favourited?(@question)
+          = link_to 'Favourite question', add_favourite_question_path(@question), method: :post
+        - else
+          = link_to 'Remove from favourites', remove_favourite_question_path(@question), method: :post
+          
+      .votes
+        - unless current_user.voted_for?(@question)
+          =link_to 'Vote up', vote_up_question_path(@question), method: :post
+        - else
+          = link_to 'Vote down', vote_down_question_path(@question), method: :post
 .row
   h2 Answers
   = render 'answers'
