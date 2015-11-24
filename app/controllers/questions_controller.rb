@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_favourite, :remove_favourite, :vote_up, :vote_down]
+  before_action :load_question, except: [:index, :new, :create]
   before_action :authenticate_user!, except: [:index, :show]
 
   respond_to :html, :json
