@@ -51,11 +51,11 @@ class User < ActiveRecord::Base
   # Votes
 
   def vote_up_for(entry)
-    entry.votes.create(user: self, vote: 1) unless self.voted_for?(entry)
+    entry.votes.create(user: self, vote: 1) unless self.voted_for?(entry) || entry.user == self
   end
 
   def vote_down_for(entry)
-    entry.votes.create(user: self, vote: -1) unless self.voted_for?(entry)
+    entry.votes.create(user: self, vote: -1) unless self.voted_for?(entry) || entry.user == self
   end
 
   def unvote(entry)
@@ -65,4 +65,5 @@ class User < ActiveRecord::Base
   def voted_for?(entry)
     !self.votes.where(votable_id: entry.id).where( votable_type: entry.class.to_s).empty?
   end
+  
 end
