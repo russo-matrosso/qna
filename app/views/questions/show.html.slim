@@ -36,12 +36,12 @@
           = link_to 'Remove from favourites', remove_favourite_question_path(@question), method: :post
           
       .votes
-        - unless current_user.voted_for?(@question)
-          = link_to 'Vote up', vote_up_question_path(@question), method: :post
-          = link_to 'Vote down', vote_down_question_path(@question), method: :post
-        - else
-          = link_to 'Unvote'
-          / , unvote_question_path(@question), method: :delete
+        - if @question.user != current_user
+          - unless current_user.voted_for?(@question)
+            = link_to 'Vote up', vote_up_question_path(@question), method: :post
+            = link_to 'Vote down', vote_down_question_path(@question), method: :post
+          - else
+            = link_to 'Unvote', unvote_question_path(@question), method: :delete
         h4= @question.votes_sum
 
 = render 'answers'
