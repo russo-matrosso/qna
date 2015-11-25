@@ -40,19 +40,19 @@ RSpec.describe VotesController, type: :controller do
     end
   end
 
-  # describe 'DELETE#unvote', sign_in: true, redirect_back: true  do
-  #   before do
-  #     post :vote_up, id: answer
-  #   end
+  describe 'DELETE#unvote', sign_in: true, redirect_back: true  do
+    before do
+      post :vote_up, id: answer
+    end
 
-  #   it 'should vote down' do
-  #     expect{post :vote_down, id: answer}.to change(answer.votes, :count).by(-1)
-  #   end
+    it 'should vote down' do
+      expect{delete :unvote, id: answer}.to change(answer.votes, :count).by(-1)
+    end
 
-  #   it 'should change votes count by -1' do
-  #     post :vote_down, id: answer
-  #     answer.reload
-  #     expect(answer.votes_sum).to eq 0
-  #   end
-  # end
+    it 'should change votes count by -1' do
+      delete :unvote, id: answer
+      answer.reload
+      expect(answer.votes_sum).to eq 0
+    end
+  end
 end

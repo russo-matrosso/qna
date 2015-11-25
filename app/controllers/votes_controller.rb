@@ -9,6 +9,11 @@ class VotesController < ApplicationController
 
   def vote_down
     current_user.vote_down_for(@parent)
+    redirect_to :back, notice: "Voted down"
+  end
+
+  def unvote
+    current_user.unvote(@parent)
     redirect_to :back, notice: "Unvoted"
   end
 
