@@ -253,6 +253,7 @@ DEPENDENCIES
   rails (= 4.2.4)
   rateaux
   remotipart
+  responders
   rspec-rails
   sdoc (~> 0.4.0)
   shoulda-matchers

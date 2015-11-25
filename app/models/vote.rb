@@ -20,4 +20,17 @@
 class Vote < ActiveRecord::Base
   belongs_to :user
   belongs_to :votable, polymorphic: true
+
+  after_create :increase_votes_sum
+  after_destroy :decrease_votes_sum
+
+  private
+
+  def increase_votes_sum
+    votable.increment(:votes_sum, 1).save
+  end
+
+  def decrease_votes_sum
+    votable.decrement(:votes_sum, 1).save
+  end
 end

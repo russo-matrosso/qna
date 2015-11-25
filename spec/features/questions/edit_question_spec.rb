@@ -18,7 +18,7 @@ feature 'Edit question', %q{
     fill_in 'Body', with: 'New question body'
     click_on 'Edit question'
 
-    expect(page).to have_content 'Your question has been successfully updated'
+    expect(page).to have_content 'Your Question has been successfully updated'
     expect(current_path).to eq question_path(question)
     expect(page).to have_content 'New question title'
     expect(page).to have_content 'New question body'

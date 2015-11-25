@@ -175,18 +175,4 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
-
-  describe 'POST #vote_up', sign_in: true, redirect_back: true  do
-    it 'should vote up question' do
-      expect{post :vote_up, id: question}.to change(question.votes, :count).by(1)
-    end
-  end
-
-  describe 'POST #vote_down', sign_in: true, redirect_back: true  do
-    before {user.vote_for(question)}
-
-    it 'should vote down' do
-      expect{post :vote_down, id: question}.to change(question.votes, :count).by(-1)
-    end
-  end
 end

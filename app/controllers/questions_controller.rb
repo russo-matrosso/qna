@@ -12,15 +12,17 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.all
     @answer = @question.answers.build
     @answer.attachments.build
-    respond_to do |format|
-        format.html
-        format.json {render json: @question.answers.order(created_at: :desc), root: false}
-    end
+    respond_with @question
+    # respond_to do |format|
+    #     format.html
+    #     format.json {render json: @question.answers.order(created_at: :desc), root: false}
+    # end
   end
 
   def new
     @question = current_user.questions.new
     @question.attachments.build
+    respond_with @question
   end
 
   def edit
@@ -28,29 +30,16 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-    if @question.save
-      flash[:notice] = 'Your question has been created'
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     @question.update(question_params)
-    if @question.save
-      flash[:notice] = 'Your question has been successfully updated'
-      redirect_to @question
-    else
-      render :edit
-    end
+    respond_with @question
   end
 
   def destroy
-    @question.destroy
-    flash[:notice] = 'Question has been deleted'
-    redirect_to questions_path
+    respond_with(@question.destroy)
   end
 
   def add_favourite
@@ -61,16 +50,6 @@ class QuestionsController < ApplicationController
   def remove_favourite
     current_user.remove_favourite(@question)
     redirect_to :back, notice: "#{@question.title} has been removed from favourites"
-  end
-
-  def vote_up
-    current_user.vote_for(@question)
-    redirect_to :back, notice: "Voted up #{@question.title}"
-  end
-
-  def vote_down
-    current_user.vote_down_for(@question)
-    redirect_to :back, notice: "Unvoted #{@question.title}"
   end
 
   private

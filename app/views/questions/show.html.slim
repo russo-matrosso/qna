@@ -1,5 +1,6 @@
 .row
-  h1= @question.title
+  .col-md-8 
+    h1= @question.title  
   .question.col-md-8 
     
     p= @question.body
@@ -22,17 +23,9 @@
               = link_to 'Yes', question_path(@question), method: :delete
               a id='hide_confirmation' href='#' No
 
-    - if user_signed_in?
-      = form_for [@question, @answer], remote: true, data: {type: :json} do |f|
-        p
-          = f.label :body, 'Your answer'
-          .answer-errors
-          = f.text_area :body
-        / p
-        /   = f.fields_for :attachments do |a|
-        /     = a.label :file
-        /     = a.file_field :file
-        = f.submit 'Create answer'
+
+    .comments 
+      = render 'comments/list', parent: @question
 
   .col-md-4
     - if user_signed_in?
@@ -44,9 +37,11 @@
           
       .votes
         - unless current_user.voted_for?(@question)
-          =link_to 'Vote up', vote_up_question_path(@question), method: :post
-        - else
+          = link_to 'Vote up', vote_up_question_path(@question), method: :post
           = link_to 'Vote down', vote_down_question_path(@question), method: :post
-.row
-  h2 Answers
-  = render 'answers'
+        - else
+          = link_to 'Unvote'
+          / , unvote_question_path(@question), method: :delete
+        h4= @question.votes_sum
+
+= render 'answers'

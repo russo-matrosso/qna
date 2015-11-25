@@ -1,18 +1,41 @@
 .answers
-  
+  .row.col-md-8 
+    h2 Answers
   - @question.answers.each do |answer|
-    - if answer.persisted?
-      .answer.col-md-8 id="answer_#{answer.id}"
-        p.answer-body = answer.body
-        p = answer.user.email
-        .edit
-          = link_to 'Edit', '', class: 'show_edit_answer'
-          = link_to 'Hide', '', class: 'hide_edit_answer'
-          = link_to 'Delete', question_answer_path(@question, answer), method: :delete, class: 'delete_answer', remote: true
+    .row
+      - if answer.persisted?
+        .answer.col-md-8 id="answer_#{answer.id}"
+          p.answer-body = answer.body
+          p = answer.user.email
+          .edit
+            = link_to 'Edit', '', class: 'show_edit_answer'
+            = link_to 'Hide', '', class: 'hide_edit_answer'
+            = link_to 'Delete', answer_path(answer), method: :delete, class: 'delete_answer', remote: true
 
 
-        = form_for [@question, answer], remote: true, class: 'edit_answer' do |f|
-          = f.label :body, 'Answer'
-          = f.text_area :body
-          = f.submit 'Save'
-        
+          = form_for [answer], remote: true, class: 'edit_answer' do |f|
+            = f.label :body, 'Answer'
+            = f.text_area :body
+            = f.submit 'Save'
+        .col-md-4
+          - if user_signed_in?
+            .votes
+              - unless current_user.voted_for?(answer)
+                = link_to 'Vote up', vote_up_answer_path(answer), method: :post
+              - else
+                = link_to 'Vote down', vote_down_answer_path(answer), method: :post
+              h4= answer.votes_sum
+
+.row.col-md-8 
+  - if user_signed_in?
+    = form_for [@question, @answer], remote: true, data: {type: :json} do |f|
+      p
+        = f.label :body, 'Your answer'
+        .answer-errors
+        = f.text_area :body
+      / p
+      /   = f.fields_for :attachments do |a|
+      /     = a.label :file
+      /     = a.file_field :file
+      = f.submit 'Create answer'
+      

@@ -40,15 +40,6 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to eq answer
     end
 
-    it 'should assign the @question' do
-      patch :update,
-            answer: attributes_for(:answer),
-            question_id: question,
-            id: answer,
-            format: :json
-      expect(assigns(:question)).to eq question
-    end
-
     it 'should change the answer' do
       patch :update,
              answer: {body: 'new body'},

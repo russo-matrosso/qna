@@ -45,6 +45,7 @@ gem 'rails', '4.2.4'
 gem 'rateaux'
 # Asynchron file upload
 gem 'remotipart'
+gem 'responders'
 # Docs
 gem 'sdoc', '~> 0.4.0', group: :doc
 # Slim 

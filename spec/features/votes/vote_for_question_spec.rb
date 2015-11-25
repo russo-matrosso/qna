@@ -8,15 +8,30 @@ feature 'Vote for question', %q{
   let (:user) {create(:user)}
   let (:question) {create(:question)}
 
-  scenario 'User vote for question' do
-    sign_in(user)
-    visit question_path(question)
-    click_on 'Vote up'
+  context 'Another user question' do
+    before do
+      sign_in(user)
+      visit question_path(question)
+    end
 
-    within '.votes' do
-      expect(page).not_to have_content 'Vote up'
-      expect(page).to have_content 'Vote down'
-      expect(page).to have_content '1'
+    scenario 'User upvote for question' do
+      click_on 'Vote up'
+
+      within '.votes' do
+        expect(page).not_to have_content 'Vote up'
+        expect(page).to have_content 'Unvote'
+        expect(page).to have_content '1'
+      end
+    end
+
+    scenario 'User downvote for question' do
+      click_on 'Vote down'
+
+      within '.votes' do
+        expect(page).not_to have_content 'Vote down'
+        expect(page).to have_content 'Unvote'
+        expect(page).to have_content '-1'
+      end
     end
   end
 

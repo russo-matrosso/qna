@@ -1,0 +1,12 @@
+en:
+  flash:
+    actions:
+      create:
+        notice: 'Your %{resource_name} has been created.'
+        alert: '%{resource_name} could not be created.'
+      update:
+        notice: 'Your %{resource_name} has been successfully updated.'
+        alert: '%{resource_name} could not be updated.'
+      destroy:
+        notice: '%{resource_name} has been deleted.'
+        alert: '%{resource_name} could not be destroyed.'

@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   has_many :favourite_questions
   has_many :favourites, through: :favourite_questions, source: :question
   has_many :votes
+  has_many :comments
 
 
   # Favourites
@@ -49,19 +50,19 @@ class User < ActiveRecord::Base
 
   # Votes
 
-  def vote_for(entry)
-    entry.votes.create(user: self)
+  def vote_up_for(entry)
+    entry.votes.create(user: self, vote: 1) unless self.voted_for?(entry)
   end
 
   def vote_down_for(entry)
-    entry.votes.find_by(user: self).destroy
+    entry.votes.create(user: self, vote: -1) unless self.voted_for?(entry)
+  end
+
+  def unvote(entry)
+    entry.votes.find_by(user: self).destroy if self.voted_for?(entry)
   end
 
   def voted_for?(entry)
     !self.votes.where(votable_id: entry.id).where( votable_type: entry.class.to_s).empty?
   end
-
-  # def find_vote(entry)
-  #   self.votes.where(votable_id: entry.id).where(votable_type: entry.class.to_s)
-  # end
 end

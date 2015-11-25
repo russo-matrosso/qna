@@ -3,7 +3,9 @@ this.Qna = {}
 class @Question
   constructor: () ->
     this.$el = $('.question')
-    this.$form = this.$el.find('#new_answer')
+    this.$form = $('#new_answer')
+    this.$delete = this.$el.find('#delete_question')
+    this.$delete_confirmation = this.$el.find('#delete_confirmation')
     this.answers = []
 
     this.ajax()
@@ -26,15 +28,17 @@ class @Question
   bind: () ->
     that = this
 
+    this.$delete.click (e) ->
+      that.$delete_confirmation.toggle()
+
+    this.$el.find('#hide_confirmation').click (e) ->
+      that.$delete_confirmation.toggle()
+
 
   toggle_elements: (one, two) ->
     one.toggle()
     two.toggle()
     
-
-
-
-
 
 $(document).on 'ready page:load', ->
   Qna.question = new Question

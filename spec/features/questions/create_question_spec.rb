@@ -17,7 +17,7 @@ feature 'Create question', %q{
     fill_in 'Body', with: 'Question body'
     click_on 'Create question'
 
-    expect(page).to have_content 'Your question has been created'
+    expect(page).to have_content 'Your Question has been created'
     expect(page).to have_content 'Question title'
     expect(page).to have_content 'Question body'
     expect(page).to have_content user.email
