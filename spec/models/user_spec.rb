@@ -9,43 +9,39 @@ RSpec.describe User do
   it {should have_many :favourite_questions}
   it {should have_many :favourites}
   it {should have_many :votes}
-  
-  describe '#add_favourite' do
+
+  describe 'Favourites' do
     let(:user) {create(:user)}
     let(:question) {create(:question)}
 
-    it 'add question to user favourite questions if qestion is given' do
-      expect{user.add_favourite(question)}.to change(user.favourites, :count).by(1)
+    describe '#add_favourite' do
+      it 'add question to user favourite questions if qestion is given' do
+        expect{user.add_favourite(question)}.to change(user.favourites, :count).by(1)
+      end
+
+      it 'shoud not add to user favourites if it is already there' do
+        user.add_favourite(question)
+        expect{user.add_favourite(question)}.not_to change(user.favourites, :count)
+      end
     end
 
-    it 'shoud not add to user favourites if it is already there' do
-      user.add_favourite(question)
-      expect{user.add_favourite(question)}.not_to change(user.favourites, :count)
-    end
-  end
+    describe '#remove_favourite' do
+      before {user.favourites << question}
 
-  describe '#remove_favourite' do
-    let(:user) {create(:user)}
-    let(:question) {create(:question)}
-
-    before {user.favourites << question}
-
-    it 'removes question from favourites' do
-      expect{user.remove_favourite(question)}.to change(user.favourites, :count).by(-1)
-    end
-  end
-
-  describe '#favourited?' do
-    let(:user) {create(:user)}
-    let(:question) {create(:question)}
-
-    it 'should return true if entry is favourited bu user' do
-      user.favourites << question
-      expect(user.favourited?(question)).to be true
+      it 'removes question from favourites' do
+        expect{user.remove_favourite(question)}.to change(user.favourites, :count).by(-1)
+      end
     end
 
-    it 'should return false if entry is not favourited by user' do
-      expect(user.favourited?(question)).to be false
+    describe '#favourited?' do
+      it 'should return true if entry is favourited bu user' do
+        user.favourites << question
+        expect(user.favourited?(question)).to be true
+      end
+
+      it 'should return false if entry is not favourited by user' do
+        expect(user.favourited?(question)).to be false
+      end
     end
   end
 
