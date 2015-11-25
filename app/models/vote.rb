@@ -27,10 +27,10 @@ class Vote < ActiveRecord::Base
   private
 
   def increase_votes_sum
-    votable.increment(:votes_sum, 1).save
+    votable.increment(:votes_sum, vote).save
   end
 
   def decrease_votes_sum
-    votable.decrement(:votes_sum, 1).save
+    votable.decrement(:votes_sum, vote).save
   end
 end

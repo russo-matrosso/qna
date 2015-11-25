@@ -9,16 +9,32 @@ RSpec.describe Vote, type: :model do
     let(:answer) {create(:answer, question_id: question, user_id: user)}
     let(:user) {create(:user)}
 
-    it 'increase question votes sum' do
-      question.votes.create(user: user)
-      question.reload
-      expect(question.votes_sum).not_to eq 0
+    describe 'if positive' do
+      it 'increase question votes sum' do
+        user.vote_up_for(question)
+        question.reload
+        expect(question.votes_sum).to eq 1
+      end
+
+      it 'increase answer votes sum' do
+        user.vote_up_for(answer)
+        answer.reload
+        expect(answer.votes_sum).to eq 1
+      end
     end
 
-    it 'increase answer votes sum' do
-      answer.votes.create(user: user)
-      answer.reload
-      expect(answer.votes_sum).not_to eq 0
+    describe 'if negative' do
+      it 'decrease question votes sum' do
+        user.vote_down_for(question)
+        question.reload
+        expect(question.votes_sum).to eq -1
+      end
+
+      it 'decrease answer votes sum' do
+        user.vote_down_for(answer)
+        answer.reload
+        expect(answer.votes_sum).to eq -1
+      end
     end
   end
 
@@ -27,20 +43,40 @@ RSpec.describe Vote, type: :model do
     let(:answer) {create(:answer, question_id: question, user_id: user)}
     let(:user) {create(:user)}
 
-    it 'decrease question votes sum' do
-      question.votes.create(user: user)
-      question.reload
-      user.vote_down_for(question)
-      question.reload
-      expect(question.votes_sum).to eq 0
+    describe 'if positive' do
+      it 'decrease question votes sum' do
+        user.vote_up_for(question)
+        question.reload
+        user.unvote(question)
+        question.reload
+        expect(question.votes_sum).to eq 0
+      end
+
+      it 'decrease answer votes sum' do
+        user.vote_up_for(answer)
+        answer.reload
+        user.unvote(answer)
+        answer.reload
+        expect(answer.votes_sum).to eq 0
+      end
     end
 
-    it 'decrease answer votes sum' do
-      answer.votes.create(user: user)
-      answer.reload
-      user.vote_down_for(answer)
-      answer.reload
-      expect(answer.votes_sum).to eq 0
+    describe 'if negative' do
+      it 'decrease question votes sum' do
+        user.vote_down_for(question)
+        question.reload
+        user.unvote(question)
+        question.reload
+        expect(question.votes_sum).to eq 0
+      end
+
+      it 'decrease answer votes sum' do
+        user.vote_down_for(answer)
+        answer.reload
+        user.unvote(answer)
+        answer.reload
+        expect(answer.votes_sum).to eq 0
+      end
     end
   end
 end
