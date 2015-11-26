@@ -19,12 +19,14 @@
             = f.submit 'Save'
         .col-md-4
           - if user_signed_in?
-            .votes
-              - unless current_user.voted_for?(answer)
-                = link_to 'Vote up', vote_up_answer_path(answer), method: :post
-              - else
-                = link_to 'Vote down', vote_down_answer_path(answer), method: :post
-              h4= answer.votes_sum
+            - if answer.user != current_user
+              .votes
+                - unless current_user.voted_for?(answer)
+                  = link_to 'Vote up', vote_up_answer_path(answer), method: :post
+                  = link_to 'Vote down', vote_down_answer_path(answer), method: :post
+                - else
+                  = link_to 'Unvote', unvote_answer_path(answer), method: :delete
+                h4= answer.votes_sum
 
 .row.col-md-8 
   - if user_signed_in?
