@@ -37,6 +37,9 @@ gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 # LESS stylesheets
 gem 'less-rails'
+# Omniauth. Authentication through social nets
+gem 'omniauth'
+gem 'omniauth-facebook'
 # Postgresql support
 gem 'pg'
 # Rails, nuff said

@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  get 'comments/create'
-
-  get 'users/show'
-
-  devise_for :users
+  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
 
   concern :commentable do
     resources :comments
@@ -23,6 +19,7 @@ Rails.application.routes.draw do
 
   resources :users
 
-
   root 'questions#index'
+  get 'comments/create'
+  get 'users/show'
 end

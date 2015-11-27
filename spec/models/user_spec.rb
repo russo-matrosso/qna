@@ -52,8 +52,8 @@ RSpec.describe User do
     let (:his_question) {create(:question, user: user)}
 
     describe '#vote_for' do
-      describe 'others entry' do
-        describe 'if user have not voted' do
+      context 'others entry' do
+        context 'if user have not voted' do
           it 'make new vote for entry' do
             expect{user.vote_up_for(question)}.to change(Vote, :count).by(1)
           end
@@ -69,7 +69,7 @@ RSpec.describe User do
           end
         end
 
-        describe 'if user have voted' do
+        context 'if user have voted' do
           it 'does not change entry' do
             user.vote_up_for(question)
             expect{user.vote_up_for(question)}.not_to change(question.votes, :count)
@@ -77,7 +77,7 @@ RSpec.describe User do
         end
       end
 
-      describe 'his entry' do
+      context 'his entry' do
         it 'does not change entry' do
           expect{user.vote_up_for(his_question)}.not_to change(his_question.votes, :count)
         end
@@ -85,8 +85,8 @@ RSpec.describe User do
     end
 
     describe '#vote_down_for' do
-      describe 'others entry' do
-        describe 'if user have not voted' do
+      context 'others entry' do
+        context 'if user have not voted' do
           it 'make new vote for entry' do
             expect{user.vote_down_for(question)}.to change(Vote, :count).by(1)
           end
@@ -102,7 +102,7 @@ RSpec.describe User do
           end
         end
 
-        describe 'if user have voted' do
+        context 'if user have voted' do
           it 'does not change entry' do
             user.vote_down_for(question)
             expect{user.vote_down_for(question)}.not_to change(question.votes, :count)
@@ -110,7 +110,7 @@ RSpec.describe User do
         end
       end
 
-      describe 'his entry' do
+      context 'his entry' do
         it 'does not change entry' do
           expect{user.vote_down_for(his_question)}.not_to change(his_question.votes, :count)
         end
@@ -118,7 +118,7 @@ RSpec.describe User do
     end
 
     describe '#unvote' do
-      describe 'if user have voted' do
+      context 'if user have voted' do
         before {user.vote_up_for(question)}
 
         it 'deletes vote for entry' do
@@ -126,7 +126,7 @@ RSpec.describe User do
         end
       end
 
-      describe 'if user have not voted' do
+      context 'if user have not voted' do
         before {another_user.vote_up_for(question)}
 
         it 'does not delete vote for entry' do
@@ -139,6 +139,68 @@ RSpec.describe User do
       it 'should return true if user has voted for entry' do
         user.vote_up_for(question)
         expect(user.voted_for?(question)).to be true
+      end
+    end
+  end
+
+  describe '.find_for_oauth' do
+    let!(:user) {create(:user)}
+    let(:auth) {OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456')}
+
+    context 'existing user with authorization' do
+      it 'returns the user' do
+        user.authorizations.create(provider: 'facebook', uid: '123456')
+        expect(User.find_for_oauth(auth)).to eq user
+      end
+    end
+
+    context 'user has no authorization' do
+      context 'existing user' do
+        let(:auth) {OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: {email: user.email})}
+        it 'should not creat new user' do
+          expect{User.find_for_oauth(auth)}.to_not change(User, :count)
+        end
+
+        it 'should create new authorization for user' do
+          expect{User.find_for_oauth(auth)}.to change(user.authorizations, :count).by(1)
+        end
+
+        it 'creates uathotization with provider and uid' do
+          user = User.find_for_oauth(auth)
+          authorization = user.authorizations.first
+
+          expect(authorization.provider).to eq auth.provider
+          expect(authorization.uid).to eq auth.uid
+        end
+      end
+
+      context 'user does not exists' do
+        let(:auth) {OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: {email: 'new@mail.com'})}
+
+        it 'creates new user' do
+          expect{User.find_for_oauth(auth)}.to change(User, :count).by(1)
+        end
+
+        it 'returns new user' do
+           expect(User.find_for_oauth(auth)).to be_a(User)
+        end
+
+        it 'fills user email' do
+          user = User.find_for_oauth(auth)
+          expect(user.email).to eq 'new@mail.com'
+        end
+
+        it 'creates authorization for user' do
+          user = User.find_for_oauth(auth)
+          expect(user.authorizations).to_not be_empty
+        end
+
+        it 'creates authorization with provider and id' do
+          authorization = User.find_for_oauth(auth).authorizations.first
+
+          expect(authorization.provider).to eq auth.provider
+          expect(authorization.uid).to eq auth.uid
+        end
       end
     end
   end
